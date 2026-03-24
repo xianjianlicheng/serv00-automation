@@ -2,8 +2,12 @@ name: SSH Login
 
 on:
   schedule:
-    - cron: '0 11 5 * *'  # 每月的 5号 北京时间 19 点运行
+    - cron: '0 11 5 * *'  # 每月 5号 北京时间 19 点
   workflow_dispatch:
+
+# 👇 加上这一行，立刻禁用 Node.js 20 警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   ssh-login:
@@ -11,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # 已修复 v2 → v4
+        uses: actions/checkout@v4
       
       - name: Set up Python
-        uses: actions/setup-python@v5  # 已修复 v2 → v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
