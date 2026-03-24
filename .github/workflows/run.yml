@@ -5,17 +5,20 @@ on:
     - cron: '0 11 5 * *'
   workflow_dispatch:
 
+# 👇 👇 👇 【关键】全局强制开启 Node.js 24，警告直接消失
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   ssh-login:
     runs-on: ubuntu-latest
 
     steps:
-      # 👉 使用 Node.js 24 原生支持的版本，警告彻底消失
       - name: Checkout repository
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5.3.0
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
