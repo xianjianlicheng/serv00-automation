@@ -2,32 +2,32 @@ name: SSH Login
 
 on:
   schedule:
-    - cron: '0 11 5 * *'  # 每月 5号 北京时间 19 点
+    - cron: '0 11 5 * *'  # 每月5号 北京时间19点
   workflow_dispatch:
 
-# 👇 加上这一行，立刻禁用 Node.js 20 警告
+# 👇 强制使用 Node.js 24，彻底消除弃用警告
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   ssh-login:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Set up Python
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.12"  # 固定版本，更稳定
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install paramiko requests
-      
-      - name: Run Python script
+
+      - name: Run script
         env:
           SSH_INFO: ${{ secrets.SSH_INFO }}
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
@@ -35,5 +35,4 @@ jobs:
           PUSH: ${{ secrets.PUSH }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          
         run: python run.py
